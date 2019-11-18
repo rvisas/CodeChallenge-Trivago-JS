@@ -1,0 +1,362 @@
+.tv {
+    position: absolute;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    width: 666px;
+    height: 538px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: $texture-400 url($texture-img);
+    padding: 20px;
+    border-radius: 8px;
+    border-bottom: 4px $black-800 solid;
+    box-shadow: inset 0 -120px 100px rgba($black, $opacity-half), 40px 10px 20px rgba($black, $opacity-low), -40px 10px 20px rgba($black, $opacity-very-low);
+    z-index: 6;
+
+    &::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        top: 54px;
+        left: 52px;
+        width: 600px;
+        height: 400px;
+        background-color: rgba($white, $opacity-half);
+        border-radius: 5% / 50%;
+        filter: blur(30px);
+        z-index: 5;
+        animation: screen 800ms infinite linear;
+    }
+}
+
+.stage {
+    transform: scale(.9);
+}
+
+.main {
+    position: relative;
+    display: inline-block;
+    padding: 30px;
+    border-radius: 8px;
+    background-color: $black-400;
+    border: 3px $black-100 solid;
+    box-shadow: 0 4px 4px rgba($black, $opacity-half);
+    vertical-align: top;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+    }
+
+    &::before {
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 80px 90px 77px 90px;
+        border-color: rgba($black, $opacity-half) rgba($black, $opacity-low) rgba($black, $opacity-none) rgba($black, $opacity-low);
+        z-index: 1;
+    }
+
+    &::after {
+        background: radial-gradient(rgba($black, $opacity-high) 50%, transparent 100%), linear-gradient(rgba($black, $opacity-very-low) 10%, transparent);
+        z-index: 2;
+    }
+}
+
+.channel {
+    position: absolute;
+    width: 226px;
+    height: 60px;
+    left: 20px;
+    bottom: 15px;
+    border-radius: 4px;
+    box-shadow: inset 2px 2px rgba($white, $opacity-very-low), inset -2px -2px rgba($black, $opacity-low), 0 1px 1px rgba($white, $opacity-low), 0 4px 10px rgba($black, $opacity-half);
+    border: 2px $black solid;
+}
+
+.range {
+    -webkit-appearance: none;
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    box-sizing: border-box;
+    background: none;
+    margin: 27px 0;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        box-shadow: 1px 1px 1px rgba($white, $opacity-low);
+        background-color: $black;
+        border-radius: 1.5px;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 25px;
+        width: 10px;
+        border-radius: 2px;
+        background-color: $texture-800;
+        background-image: linear-gradient(rgba($white, $opacity-very-low), transparent);
+        box-shadow: inset 1px 1px 1px rgba($white, $opacity-low), 1px 1px 6px rgba($black, $opacity-full);
+        cursor: pointer;
+        margin-top: -10px;
+    }
+
+    &:hover::-webkit-slider-thumb {
+        background-color: $texture-600;
+    }
+}
+
+.color,
+.power,
+.reset {
+    position: absolute;
+    width: 170px;
+    height: 60px;
+    right: 20px;
+    bottom: 15px;
+    border-radius: 4px;
+    box-shadow: inset 2px 2px rgba($white, $opacity-very-low), inset -2px -2px rgba($black, $opacity-low), 0 1px 1px rgba($white, $opacity-low), 0 4px 10px rgba($black, $opacity-half);
+    border: 2px $black solid;
+
+    > button {
+        position: relative;
+        width: 70px;
+        height: 40px;
+        top: 10px;
+        left: 10px;
+        background-color: $texture-800;
+        background-image: linear-gradient(rgba($white, $opacity-lowest), transparent);
+        border-radius: 4px;
+        box-shadow: inset 1px 1px rgba($white, $opacity-very-low), inset 1px 1px rgba($white, $opacity-very-low), inset -1px -1px rgba($black, $opacity-low), 0 1px 1px rgba($white, $opacity-low);
+        border: 2px $black solid;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $texture-600;
+        }
+    }
+}
+
+.color {
+    right: 284px;
+    bottom: 15px;
+}
+
+.reset {
+    right: 192px;
+    bottom: 15px;
+    width: 90px;
+}
+
+.on-btn-text {
+    pointer-events: none;
+    position: absolute;
+    font-size: 10px;
+    left: 26px;
+    top: 27px;
+    color: $black;
+    background-color: rgba($black-100, $opacity-low);
+    text-shadow: 0 1px 0 rgba($white, $opacity-low);
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 5px;
+}
+
+.reset .on-btn-text {
+    left: 28px;
+}
+
+.power {
+    &::before,
+    &::after {
+        position: absolute;
+        font-size: 10px;
+        color: $white-400;
+        width: 5px;
+        height: 5px;
+    }
+
+    &::after {
+        content: " Running ";
+        top: 18px;
+        left: 100px;
+        bottom: 30px;
+        background-color: $green;
+        border: 1px $black-800 solid;
+        border-radius: 50%;
+        line-height: 5px;
+        text-indent: 12px;
+        text-shadow: 0 1px $black;
+    }
+
+    &::before {
+        content: " Stopped ";
+        top: 38px;
+        left: 100px;
+        bottom: 30px;
+
+        background-color: lighten($red, 15%);
+        box-shadow: 0 0 10px lighten($red, 15%), 0 0 5px lighten($red, 15%);
+        border: 1px lighten($red, 15%) solid;
+
+        border-radius: 50%;
+        line-height: 5px;
+        text-indent: 12px;
+        text-shadow: 0 1px $black;
+    }
+
+    &--active::before {
+        background-color: $red;
+        border: 1px $black-800 solid;
+        box-shadow: none;
+    }
+
+    &--active::after {
+        background: lighten($green, 15%);
+        box-shadow: 0 0 10px lighten($green, 15%), 0 0 5px lighten($green, 15%);
+        border: 1px lighten($green, 15%) solid;
+    }
+}
+
+.color__1,
+.color__2,
+.color__3 {
+    position: absolute;
+    font-size: 10px;
+    color: $white-400;
+    width: 5px;
+    height: 5px;
+    top: 18px;
+    left: 100px;
+    bottom: 30px;
+    border: 1px $black-800 solid;
+    border-radius: 50%;
+    line-height: 5px;
+    text-indent: 12px;
+    text-shadow: 0 1px $black;
+}
+
+.color__1 {
+    top: 14px;
+    background-color: $trv-blue;
+
+    &--active {
+        background-color: lighten($trv-blue, 15%);
+        box-shadow: 0 0 10px lighten($trv-blue, 15%), 0 0 5px lighten($trv-blue, 15%);
+        border: 1px lighten($trv-blue, 15%) solid;
+    }
+}
+
+.color__2 {
+    top: 28px;
+    background: $trv-orange;
+
+    &--active {
+        background: lighten($trv-orange, 15%);
+        box-shadow: 0 0 10px lighten($trv-orange, 15%), 0 0 5px lighten($trv-orange, 15%);
+        border: 1px lighten($trv-orange, 15%) solid;
+    }
+}
+
+.color__3 {
+    top: 42px;
+    background-color: $trv-red;
+
+    &--active {
+        background-color: lighten($trv-red, 15%);
+        box-shadow: 0 0 10px lighten($trv-red, 15%), 0 0 5px lighten($trv-red, 15%);
+        border: 1px lighten($trv-red, 15%) solid;
+    }
+}
+
+.footer {
+    position: absolute;
+    height: 15px;
+    bottom: -22px;
+    left: 15px;
+    right: 15px;
+    background: $black-800;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: inset 0 5px 5px rgba($black, $opacity-high), 0 10px 25px rgba($black, $opacity-low);
+    border-bottom: 3px $black solid;
+    z-index: -1;
+}
+
+.noise {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 5% / 50%;
+    z-index: 3;
+}
+
+.effect {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border-radius: 50% / 5%;
+    background: $black-800;
+    background-size: 80%;
+    animation: noise 200ms infinite linear;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        border-radius: 50% / 5%;
+        pointer-events: none;
+        z-index: 4;
+    }
+
+    &::before {
+        height: 20%;
+        background-color: rgba($white, $opacity-very-low);
+        animation: noise-effect 4s infinite linear;
+        opacity: $opacity-low;
+    }
+
+    &::after {
+        height: 100%;
+        background: radial-gradient(transparent 50%, rgba($black, $opacity-high)), linear-gradient(rgba($white, $opacity-half) 10%, transparent);
+    }
+}
+
+.content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100%;
+    border-radius: 50% / 5%;
+    filter: brightness(1.2) contrast(1.5);
+    animation: image 20ms alternate infinite;
+    background-color: $black;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(0, $white, $white 1px, transparent 2px);
+        opacity: $opacity-low;
+        border-radius: 50% / 5%;
+        animation: pixels 20ms alternate infinite;
+        pointer-events: none;
+    }
+}

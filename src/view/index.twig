@@ -1,0 +1,69 @@
+{% import './index.scss' as styles %}
+
+{% set colors = [
+    ' Blue ',
+    ' Orange ',
+    ' Red '
+] %}
+
+<div class="{{ styles['tv'] }}">
+    <main class="{{ styles['main'] }}">
+        <div class="{{ styles['noise'] }}">
+            <div class="{{ styles['effect'] }}">
+                <div class="{{ styles['content'] }}">
+                    <div class="{{ styles['stage'] }}">
+                        <div class="{{ styles['grid-container'] }}" ref="{{ grid }}">
+                            {% for col in matrix %}
+                                {% set loop1 = loop.index %}
+                                {% for cell in col %}
+                                    {% set key = 'x' ~ loop.index ~ 'y' ~ loop1 %}
+                                    {% set isActive = cell[0] == 1 %}
+                                    {% set color = cell[1] %}
+                                    <div class="{{ {
+                                        base: styles['cell'],
+                                        (styles['cell--color-' ~ color]): isActive,
+                                    } | classes }}" key="{{ key }}" id="{{ key }}"></div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <nav class="{{ styles['channel'] }}">
+        <input {{ {
+            ref: framerateSlider,
+            class: styles['range'],
+            type: 'range',
+            min: 1,
+            max: 500,
+            value: 200,
+        } | attrs }} />
+    </nav>
+    <nav class="{{ styles['color'] }}">
+        <button type="button" ref="{{colorSwitch}}"></button>
+        {% for label in colors %}
+            {% set i = loop.index %}
+            <span key="{{ i }}" class="{{ {
+                base: styles['color__' ~ i],
+                (styles['color__' ~ i ~ '--active']): color == i,
+             } | classes }}">
+                {{- label -}}
+            </span>
+        {% endfor %}
+         <span class="{{ styles['on-btn-text'] }}"> Color </span>
+    </nav>
+    <nav class="{{ styles['reset'] }}">
+        <button type="button" ref="{{ reset }}"></button>
+        <span class="{{ styles['on-btn-text'] }}"> Reset </span>
+    </nav>
+    <nav class="{{ {
+        base: styles['power'],
+        (styles['power--active']): running
+    }| classes }}">
+        <button type="button" ref="{{ powerSwitch }}"></button>
+        <span class="{{ styles['on-btn-text'] }}"> Power </span>
+    </nav>
+    <footer class="{{ styles['footer'] }}"></footer>
+</div>

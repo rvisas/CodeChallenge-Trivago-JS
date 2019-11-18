@@ -1,0 +1,73 @@
+{
+  "name": "melody-template",
+  "version": "1.0.0",
+  "description": "Trivago JS Case Study",
+  "main": "src/index.js",
+  "author": "trivago",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack --progress --colors --display-chunks",
+    "test": "NODE_ENV=test jest"
+  },
+  "browserslist": [
+    "> 1%",
+    "IE >= 11",
+    "ios >= 8",
+    "Android 4"
+  ],
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".history"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  },
+  "devDependencies": {
+    "babel-jest": "^24.0.0",
+    "css-loader": "^0.28.4",
+    "cssnano": "^3.10.0",
+    "jest": "^24.0.0",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3",
+    "autoprefixer": "7.1.1",
+    "babel-core": "6.25.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.26.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react-app": "^3.1.1",
+    "babel-runtime": "6.23.0"
+  },
+  "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "melody-component": "^1.0.0",
+    "melody-hoc": "^1.0.0",
+    "melody-idom": "^1.0.0",
+    "melody-loader": "^1.0.0",
+    "melody-parser": "^1.0.0",
+    "melody-plugin-idom": "^1.0.0",
+    "melody-redux": "^1.1.0",
+    "melody-traverse": "^1.0.0",
+    "melody-types": "^1.0.0",
+    "redux": "^4.0.0",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.2.2"
+  }
+}

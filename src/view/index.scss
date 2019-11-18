@@ -1,0 +1,16 @@
+
+body {
+    --columns: 103;
+    --cell-size: 6px;
+
+    padding: 0;
+    margin: 0;
+
+    * {
+        outline: none;
+    }
+}
+@import "./scss/config";
+@import "./scss/grid";
+@import "./scss/animations";
+@import "./scss/tv";
