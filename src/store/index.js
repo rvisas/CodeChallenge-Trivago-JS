@@ -53,6 +53,7 @@ initialState.matrix = drawMatrix(
 //
 // Can you make her idea real?
 
+// REFACTORED THE ORDER OF PRESENTING THE CODE. COULD NOT DEVELOP A MAP-LIKE FUNCTION
 const reducer = (state, action) => {
     const { matrix, columns, rows, patterns } = state;
     const output = { ...state };
