@@ -55,69 +55,36 @@ initialState.matrix = drawMatrix(
 
 const reducer = (state, action) => {
     const { matrix, columns, rows, patterns } = state;
+    const output = { ...state };
     switch (action.type) {
-        case 'START_STOP': {
-            return {
-                ...state,
-                running: !state.running,
-            };
-        }
-        case 'FRAME_RATE_CHANGE': {
-            return {
-                ...state,
-                frameRate: action.payload.target.value,
-            };
-        }
-        case 'TICK': {
-            return {
-                ...state,
-                matrix: drawMatrix(
-                    columns,
-                    rows,
-                    getNextGeneration(matrix, state.rules),
-                ),
-            };
-        }
-        case 'RESET': {
-            return {
-                ...state,
-                matrix: drawMatrix(columns, rows, head(patterns)),
-            };
-        }
-        case 'CELLS_SELECTED': {
+        case 'START_STOP':
+            output.running = !state.running;
+            break;
+        case 'FRAME_RATE_CHANGE':
+            output.frameRate = action.payload.target.value;
+            break;
+        case 'TICK':
+            output.matrix = drawMatrix(columns, rows, getNextGeneration(matrix, state.rules));
+            break;
+        case 'RESET':
+            output.matrix = drawMatrix(columns, rows, head(patterns));
+            break;
+        case 'CELLS_SELECTED':
             const { payload } = action;
             const [x, y] = payload;
-            return {
-                ...state,
-                matrix: drawMatrix(
-                    columns,
-                    rows,
-                    updateCells(matrix, { [x]: [y, state.color] }),
-                ),
-            };
-        }
-        case 'STORE_PATTERN': {
-            return {
-                ...state,
-                patterns: [...patterns, getCurrentLiving(matrix)],
-            };
-        }
-        case 'PATTERN_SELECTED': {
-            return {
-                ...state,
-                matrix: drawMatrix(columns, rows, patterns[action.payload]),
-            };
-        }
-        case 'COLOR_CHANGED': {
-            return {
-                ...state,
-                color: getNextColor(state.color),
-            };
-        }
-        default: {
-            return state;
-        }
+            output.matrix = drawMatrix(columns, rows, updateCells(matrix, { [x]: [y, state.color] }));
+            break;
+        case 'STORE_PATTERN':
+            output.patterns = [...patterns, getCurrentLiving(matrix)];
+            break;
+        case 'PATTERN_SELECTED':
+            output.matrix = drawMatrix(columns, rows, patterns[action.payload]);
+            break;
+        case 'COLOR_CHANGED':
+            output.color = getNextColor(state.color);
+            break;
     }
+    return output;
 };
 
 const epicMiddleware = createEpicMiddleware();

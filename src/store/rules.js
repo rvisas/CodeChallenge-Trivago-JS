@@ -3,6 +3,8 @@ import {
     isCellAlive,
     countNeighbours,
     BLUE,
+    ORANGE,
+    RED
 } from '../utils';
 import { head, compose, reduce } from 'lodash/fp';
 
@@ -25,7 +27,15 @@ import { head, compose, reduce } from 'lodash/fp';
 export const survivalRule = (x, y, matrix, [isAlive, color = BLUE]) => {
     const neighbours = countNeighbours(matrix, x, y);
     const cell = matrix[x][y];
-    return [isCellAlive(cell) && neighbours === 2, color];
+    return [shouldLive(isCellAlive(cell), neighbours), color];
+};
+
+const shouldLive = (isAlive, neighbors) => {
+    if (isAlive) {
+        return ((neighbors === 2) || (neighbors === 3)) ? true : false;
+    } else {
+        return (neighbors === 3) ? true : false;
+    }
 };
 
 // ###########################################################
@@ -39,7 +49,12 @@ export const survivalRule = (x, y, matrix, [isAlive, color = BLUE]) => {
  * Returns the most frequent color for its input params `neighbourColors`.
  * @param {array} neighbourColors
  */
-export const getMostFrequentColor = neighbourColors => BLUE;
+// source: https://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
+export const getMostFrequentColor = (neighbourColors) => {
+    return neighbourColors.sort((a, b) =>
+        neighbourColors.filter(v => v === a).length - neighbourColors.filter(v => v === b).length
+    ).pop();
+};
 
 /**
  * This method determines the new color for a living cell by finding the most occurent color of the
