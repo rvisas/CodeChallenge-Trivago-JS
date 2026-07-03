@@ -11,17 +11,17 @@ module.exports = {
     output: {
         path: resolve('public'),
         filename: '[name].js',
+        clean: true,
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        plugins: [
-                            require('babel-plugin-transform-object-rest-spread'),
-                        ],
+                        // babel.config.json will be used
                     },
                 },
             },
@@ -42,48 +42,59 @@ module.exports = {
                 use: [
                     'style-loader',
                     {
-                        loader: require.resolve('css-loader'),
+                        loader: 'css-loader',
                         options: {
-                            modules: true,
+                            modules: {
+                                localIdentName: '[hash:base64:5]',
+                            },
                             sourceMap: false,
-                            localIdentName: '[hash:base64:5]', // '[local]'
                         },
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            ident: 'postcss',
-                            plugins: [
-                                require('autoprefixer')({
-                                    remove: false,
-                                    add: true,
-                                    flexbox: 'no-2009',
-                                }),
-                                require('cssnano')({
-                                    zindex: false,
-                                    discardUnused: {
-                                        fontFace: false,
-                                    },
-                                    reduceIdents: {
-                                        keyframes: false,
-                                    },
-                                }),
-                            ],
+                            postcssOptions: {
+                                plugins: [
+                                    'autoprefixer',
+                                    ['cssnano', {
+                                        zindex: false,
+                                        discardUnused: {
+                                            fontFace: false,
+                                        },
+                                        reduceIdents: {
+                                            keyframes: false,
+                                        },
+                                    }],
+                                ],
+                            },
                         },
                     },
                     {
                         loader: 'sass-loader',
+                        options: {
+                            implementation: require('sass'),
+                        },
                     },
                 ],
             },
         ],
     },
     devServer: {
-        contentBase: resolve('public'),
-        port: 3456,
-        watchOptions: {
-            ignored: /node_modules/,
+        static: {
+            directory: resolve('public'),
         },
-        overlay: false,
+        port: 3456,
+        watchFiles: ['src/**/*', 'public/**/*'],
+        hot: true,
+        open: true,
     },
+    resolve: {
+        extensions: ['.js', '.json'],
+        modules: ['node_modules', 'src'],
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
+    ],
 };
