@@ -51,7 +51,7 @@ describe('Rules tests', () => {
                     [[0, 2], [1, 2], [0, 2]],
                     [[0, 2], [1, 2], [0, 2]],
                 ],
-                expectation: [false, 1],
+                expectation: [false, 2],
             },
             {
                 description: '[START: ALIVE]  [NEIGHBOURS: 2 ]  [NEXT: ALIVE]',
@@ -60,7 +60,7 @@ describe('Rules tests', () => {
                     [[0, 2], [1, 2], [0, 2]],
                     [[0, 2], [1, 2], [0, 2]],
                 ],
-                expectation: [true, 1],
+                expectation: [true, 2],
             },
             {
                 description: '[START: ALIVE]  [NEIGHBOURS: >3]  [NEXT: DEAD ]',
@@ -69,7 +69,7 @@ describe('Rules tests', () => {
                     [[0, 2], [1, 2], [0, 2]],
                     [[0, 2], [1, 2], [0, 2]],
                 ],
-                expectation: [false, 1],
+                expectation: [false, 2],
             },
             {
                 description: '[START: ALIVE]  [NEIGHBOURS: 3 ]  [NEXT: ALIVE]',
@@ -78,7 +78,7 @@ describe('Rules tests', () => {
                     [[1, 2], [1, 2], [0, 2]],
                     [[0, 2], [1, 2], [0, 2]],
                 ],
-                expectation: [true, 1],
+                expectation: [true, 2],
             },
             {
                 description: '[START: DEAD ]  [NEIGHBOURS: 3 ]  [NEXT: ALIVE]',

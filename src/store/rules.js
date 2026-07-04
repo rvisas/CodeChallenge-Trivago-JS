@@ -1,5 +1,6 @@
 import {
     getNeighbourColors,
+    getCellColor,
     isCellAlive,
     countNeighbours,
     BLUE,
@@ -27,7 +28,8 @@ import { head, compose, reduce } from 'lodash/fp';
 export const survivalRule = (x, y, matrix, [isAlive, color = BLUE]) => {
     const neighbours = countNeighbours(matrix, x, y);
     const cell = matrix[x][y];
-    return [shouldLive(isCellAlive(cell), neighbours), color];
+    const cellColor = isCellAlive(cell) ? getCellColor(cell) : color;
+    return [shouldLive(isCellAlive(cell), neighbours), cellColor];
 };
 
 const shouldLive = (isAlive, neighbors) => {

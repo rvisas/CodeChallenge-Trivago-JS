@@ -16,21 +16,35 @@ import {
 // ##############################################################
 // ### TASK: WEB-104 Refactoring by removing code duplication ###
 // ##############################################################
-// TODO: Please take a look at the calls to `actionCreator` and `dispatchTo` inside the
-// following two code sections.
-// There seems to be some repetion here.
-// Can you cut down the noise while still making usage of these helpers?
-
-// Action creators that will dispatch the defined actions to the bound store when called.
-const mapDispatchToProps = {
-    startStop: actionCreator('START_STOP'),
-    init: actionCreator('RESET'),
-    cellsSelected: actionCreator('CELLS_SELECTED'),
-    frameRate: actionCreator('FRAME_RATE_CHANGE'),
-    storePattern: actionCreator('STORE_PATTERN'),
-    patternSelected: actionCreator('PATTERN_SELECTED', property('target.id')),
-    colorChanged: actionCreator('COLOR_CHANGED'),
+// Single source of truth for action mappings:
+// { actionName: [actionType, payloadExtractor?, eventType, refName] }
+const actionConfig = {
+    startStop:   ['START_STOP',            null, 'click', 'powerSwitch'],
+    init:        ['RESET',                 null, 'click', 'reset'],
+    cellsSelected: ['CELLS_SELECTED',      null, null,  'grid'],      // uses drawHandler
+    frameRate:   ['FRAME_RATE_CHANGE',     null, 'change', 'framerateSlider'],
+    storePattern:['STORE_PATTERN',         null, 'click', 'store'],
+    patternSelected: ['PATTERN_SELECTED',  property('target.id'), 'click', 'pattern'],
+    colorChanged:['COLOR_CHANGED',         null, 'click', 'colorSwitch'],
 };
+
+// Generate mapDispatchToProps from config
+const mapDispatchToProps = Object.fromEntries(
+    Object.entries(actionConfig).map(([key, [type, extractor]]) => [
+        key,
+        extractor ? actionCreator(type, extractor) : actionCreator(type)
+    ])
+);
+
+// Generate withRefs bindings from config
+const refsConfig = { grid: drawHandler }; // special case
+Object.entries(actionConfig).forEach(([actionName, config]) => {
+    const eventType = config[2];
+    const refName = config[3];
+    if (eventType && refName && refName !== 'grid') {
+        refsConfig[refName] = dispatchTo(component => component.props[actionName], eventType);
+    }
+});
 
 // Higher-Order-Component that connects the component to a store and wraps the
 // template refs to a dispatch method.
@@ -39,14 +53,7 @@ const enhance = compose(
         identity,
         mapDispatchToProps,
     ),
-    withRefs(component => ({
-        powerSwitch: dispatchTo(component, 'click', 'startStop'),
-        reset: dispatchTo(component, 'click', 'init'),
-        colorSwitch: dispatchTo(component, 'click', 'colorChanged'),
-        store: dispatchTo(component, 'click', 'storePattern'),
-        pattern: dispatchTo(component, 'click', 'patternSelected'),
-        framerateSlider: dispatchTo(component, 'change', 'frameRate'),
-        grid: drawHandler(component),
-    })),
+    withRefs(component => refsConfig),
 );
+
 export default enhance(createComponent(template));

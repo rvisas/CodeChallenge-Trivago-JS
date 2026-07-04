@@ -41,51 +41,38 @@ initialState.matrix = drawMatrix(
 // ################################################################
 // ### TASK: WEB-103 Implement planned refactoring for Reducer  ###
 // ################################################################
-// TODO: Before our engineer left this code base he had an idea to refactor
-// this reducer to something like
-//
-// const map = {
-//     TICK: ({ matrix }) => getNextGeneration(matrix, state.rules),
-//     RESET: () => {},
-//     CELLS_SELECTED: ({ matrix }, { payload }) => updateCells(matrix, payload),
-//     PATTERN_SELECTED: ({ patterns }, { payload }) => patterns[payload]
-// };
-//
-// Can you make her idea real?
+// Map-based action handlers for cleaner reducer logic
+const createActionHandlers = (state) => ({
+    START_STOP: () => ({ running: !state.running }),
+    FRAME_RATE_CHANGE: (action) => ({ frameRate: action.payload.target.value }),
+    TICK: () => ({
+        matrix: drawMatrix(state.columns, state.rows, getNextGeneration(state.matrix, state.rules))
+    }),
+    RESET: () => ({
+        matrix: drawMatrix(state.columns, state.rows, head(state.patterns))
+    }),
+    CELLS_SELECTED: (action) => {
+        const [x, y] = action.payload;
+        return {
+            matrix: drawMatrix(state.columns, state.rows, updateCells(state.matrix, { [x]: [y, state.color] }))
+        };
+    },
+    STORE_PATTERN: () => ({
+        patterns: [...state.patterns, getCurrentLiving(state.matrix)]
+    }),
+    PATTERN_SELECTED: (action) => ({
+        matrix: drawMatrix(state.columns, state.rows, state.patterns[action.payload])
+    }),
+    COLOR_CHANGED: () => ({
+        color: getNextColor(state.color)
+    })
+});
 
-// REFACTORED THE ORDER OF PRESENTING THE CODE. COULD NOT DEVELOP A MAP-LIKE FUNCTION
 const reducer = (state, action) => {
-    const { matrix, columns, rows, patterns } = state;
-    const output = { ...state };
-    switch (action.type) {
-        case 'START_STOP':
-            output.running = !state.running;
-            break;
-        case 'FRAME_RATE_CHANGE':
-            output.frameRate = action.payload.target.value;
-            break;
-        case 'TICK':
-            output.matrix = drawMatrix(columns, rows, getNextGeneration(matrix, state.rules));
-            break;
-        case 'RESET':
-            output.matrix = drawMatrix(columns, rows, head(patterns));
-            break;
-        case 'CELLS_SELECTED':
-            const { payload } = action;
-            const [x, y] = payload;
-            output.matrix = drawMatrix(columns, rows, updateCells(matrix, { [x]: [y, state.color] }));
-            break;
-        case 'STORE_PATTERN':
-            output.patterns = [...patterns, getCurrentLiving(matrix)];
-            break;
-        case 'PATTERN_SELECTED':
-            output.matrix = drawMatrix(columns, rows, patterns[action.payload]);
-            break;
-        case 'COLOR_CHANGED':
-            output.color = getNextColor(state.color);
-            break;
-    }
-    return output;
+    const handlers = createActionHandlers(state);
+    const handler = handlers[action.type];
+    if (!handler) return state;
+    return { ...state, ...handler(action) };
 };
 
 const epicMiddleware = createEpicMiddleware();
