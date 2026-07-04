@@ -1,7 +1,7 @@
 /**
  * NOTE: ALL functions inside this file are working properly! No need to parse them for errors.
  */
-import { flatten, head, compose, map, last, negate, identity } from 'lodash/fp';
+import { flatten, head, flowRight as compose, map, last, negate, identity } from 'lodash-es';
 import { fromEvent, concat, of } from 'rxjs';
 import { switchMap, takeUntil, map as mapR } from 'rxjs/operators';
 

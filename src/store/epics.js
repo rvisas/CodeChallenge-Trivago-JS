@@ -1,6 +1,6 @@
 import { interval, combineLatest, animationFrameScheduler, pipe } from 'rxjs';
 import { startWith, map, takeUntil, switchMap, filter } from 'rxjs/operators';
-import { negate } from 'lodash/fp';
+import { negate } from 'lodash-es';
 import { ofType } from 'redux-observable';
 
 const filterRunning = bool => state =>

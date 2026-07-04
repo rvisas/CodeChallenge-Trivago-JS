@@ -7,7 +7,7 @@ import {
     ORANGE,
     RED
 } from '../utils';
-import { head, compose, reduce } from 'lodash/fp';
+import { head, flowRight as compose, reduce } from 'lodash-es';
 
 /**
  * This is the heart and main rule that was built after the origin rule of `Conways´s Game of Life`
